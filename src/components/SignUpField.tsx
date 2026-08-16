@@ -1,4 +1,5 @@
 import { useState, type FormEvent } from 'react'
+import { addCredential } from '../store/credentials'
 
 function validateUsername(username: string): string | null {
     if (username.length < 8) return 'Username must be at least 8 characters long'
@@ -16,7 +17,11 @@ function validatePassword(password: string): string | null {
     return null
 }
 
-export default function SignUpField() {
+interface SignUpFieldProps {
+    onSuccess?: () => void
+}
+
+export default function SignUpField({ onSuccess }: SignUpFieldProps) {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [error, setError] = useState('')
@@ -37,7 +42,9 @@ export default function SignUpField() {
             return
         }
 
-        // TODO: Replace with real sign-up logic
+        // Validation passed — register the new credentials
+        addCredential({ username, password })
+        onSuccess?.()
     }
 
     return (

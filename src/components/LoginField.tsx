@@ -1,6 +1,11 @@
 import { useState, type FormEvent } from 'react'
+import { validateCredential } from '../store/credentials'
 
-export default function LoginField() {
+interface LoginFieldProps {
+    onSuccess?: () => void
+}
+
+export default function LoginField({ onSuccess }: LoginFieldProps) {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [error, setError] = useState('')
@@ -14,7 +19,11 @@ export default function LoginField() {
             return
         }
 
-        // TODO: Replace with real auth check
+        if (validateCredential(username, password)) {
+            onSuccess?.()
+            return
+        }
+
         setError('Invalid Username/Password')
     }
 
