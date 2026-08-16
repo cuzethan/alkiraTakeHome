@@ -2,7 +2,7 @@ import { useState, type FormEvent } from 'react'
 import { validateCredential } from '../store/credentials'
 
 interface LoginFieldProps {
-    onSuccess?: () => void
+    onSuccess?: (username: string) => void
 }
 
 export default function LoginField({ onSuccess }: LoginFieldProps) {
@@ -20,7 +20,7 @@ export default function LoginField({ onSuccess }: LoginFieldProps) {
         }
 
         if (validateCredential(username, password)) {
-            onSuccess?.()
+            onSuccess?.(username)
             return
         }
 

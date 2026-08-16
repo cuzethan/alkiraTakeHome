@@ -15,7 +15,13 @@ React.js, Vitest, React Testing Library
 3. Terminal should redirect you to the localhost link to view the website "http://localhost:5173/"
 
 ### Mock user credentials/roles
-Given user credentials: { username: 'testuser', password: 'testpass' }
+
+| Username | Password | Role |
+|----------|----------|------|
+| `testuser` | `testpass` | read-write |
+| `viewer` | `viewerpass` | read-only |
+
+Accounts created via Sign Up default to read-only.
 
 Verification Code: "coolcode123"
 
@@ -24,6 +30,8 @@ Verification Code: "coolcode123"
 2. Run "npm test" on the terminal (all tests from src/test are being ran)
 
 ### Key design decisions and assumptions
+
+I am assuming for a take-home, you don't really want me to use react-router or any crazy stuff, so I am just using conditional rendering to keep it simple.
 
 I assume that storage isn't a bottleneck, so I am just storing all credentials in a in-memory array
 
@@ -34,6 +42,10 @@ Since email/password validation wasn't specified in terms of login:
 For signup, I will add the following constraints:
     Username/Password no whitespace and at least 8 characters long
     Password must have at least 1 uppercase, 1 lowercase, 1 symbol, and 1 number
+
+For 2FA, I just used a mock one-time email code
+
+For the protected screen, I just did a very simple "to-do list", honestly a poorly written and not the most functional one but it does demonstrate the roles well.
 
 
 ### Known limitations

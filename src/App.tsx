@@ -4,17 +4,25 @@ import LoginField from './components/LoginField'
 import SignUpField from './components/SignUpField'
 import TwoFactorAuth from './components/TwoFactorAuth'
 import ProtectedScreen from './components/ProtectedScreen'
+import { getRoleForUser, type Role } from './store/credentials'
 
 type Screen = 'login' | 'signup' | 'twoFactor' | 'protected'
 
 function App() {
   const [screen, setScreen] = useState<Screen>('login')
+  const [userRole, setUserRole] = useState<Role>('read-only')
+
+  const handleLoginSuccess = (username: string) => {
+    const role = getRoleForUser(username)
+    setUserRole(role ?? 'read-only')
+    setScreen('twoFactor')
+  }
 
   return (
     <div>
       {screen === 'login' && (
         <>
-          <LoginField onSuccess={() => setScreen('twoFactor')} />
+          <LoginField onSuccess={handleLoginSuccess} />
           <p>
             Don't have an account?{' '}
             <button type="button" onClick={() => setScreen('signup')}>
@@ -37,7 +45,7 @@ function App() {
       {screen === 'twoFactor' && (
         <TwoFactorAuth onSuccess={() => setScreen('protected')} />
       )}
-      {screen === 'protected' && <ProtectedScreen />}
+      {screen === 'protected' && <ProtectedScreen role={userRole} />}
     </div>
   )
 }
