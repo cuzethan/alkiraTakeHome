@@ -3,8 +3,9 @@ import './App.css'
 import LoginField from './components/LoginField'
 import SignUpField from './components/SignUpField'
 import TwoFactorAuth from './components/TwoFactorAuth'
+import ProtectedScreen from './components/ProtectedScreen'
 
-type Screen = 'login' | 'signup' | 'twoFactor'
+type Screen = 'login' | 'signup' | 'twoFactor' | 'protected'
 
 function App() {
   const [screen, setScreen] = useState<Screen>('login')
@@ -33,7 +34,10 @@ function App() {
           </p>
         </>
       )}
-      {screen === 'twoFactor' && <TwoFactorAuth />}
+      {screen === 'twoFactor' && (
+        <TwoFactorAuth onSuccess={() => setScreen('protected')} />
+      )}
+      {screen === 'protected' && <ProtectedScreen />}
     </div>
   )
 }
