@@ -13,6 +13,19 @@ describe('Sign Up Page', () => {
     expect(screen.getByLabelText(/password/i)).toBeInTheDocument()
   })
 
+  it('shows username and password requirements', () => {
+    render(<SignUpField />)
+
+    expect(screen.getByText(/username requirements/i)).toBeInTheDocument()
+    expect(screen.getByText(/password requirements/i)).toBeInTheDocument()
+    expect(screen.getAllByText(/at least 8 characters/i).length).toBe(2)
+    expect(screen.getAllByText(/no whitespace/i).length).toBe(2)
+    expect(screen.getByText(/at least 1 uppercase letter/i)).toBeInTheDocument()
+    expect(screen.getByText(/at least 1 lowercase letter/i)).toBeInTheDocument()
+    expect(screen.getByText(/at least 1 number/i)).toBeInTheDocument()
+    expect(screen.getByText(/at least 1 symbol/i)).toBeInTheDocument()
+  })
+
   describe('Username validation', () => {
     it('shows error when username is less than 8 characters', async () => {
       const user = userEvent.setup()

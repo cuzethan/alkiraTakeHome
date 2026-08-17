@@ -57,6 +57,11 @@ export default function SignUpField({ onSuccess }: SignUpFieldProps) {
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
                 />
+                <p>Username requirements:</p>
+                <ul>
+                    <li>At least 8 characters</li>
+                    <li>No whitespace</li>
+                </ul>
             </div>
             <div>
                 <label htmlFor="password">Password</label>
@@ -66,6 +71,15 @@ export default function SignUpField({ onSuccess }: SignUpFieldProps) {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                 />
+                <p>Password requirements:</p>
+                <ul>
+                    <li>At least 8 characters</li>
+                    <li>No whitespace</li>
+                    <li>At least 1 uppercase letter</li>
+                    <li>At least 1 lowercase letter</li>
+                    <li>At least 1 number</li>
+                    <li>At least 1 symbol</li>
+                </ul>
             </div>
             {error && <p role="alert">{error}</p>}
             <button type="submit">Sign Up</button>
