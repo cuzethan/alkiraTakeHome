@@ -4,13 +4,26 @@ interface TwoFactorAuthProps {
     onSuccess: () => void;
 }
 
+const VALID_CODE = "123456";
+
 export default function TwoFactorAuth({ onSuccess }: TwoFactorAuthProps) {
     const [code, setCode] = useState("");
     const [error, setError] = useState("");
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        if (code === "coolcode123") {
+
+        if (code.length !== 6) {
+            setError("Verification code must be exactly 6 characters long");
+            return;
+        }
+
+        if (!/^\d{6}$/.test(code)) {
+            setError("Verification code must contain only digits");
+            return;
+        }
+
+        if (code === VALID_CODE) {
             setError("");
             onSuccess();
         } else {
@@ -27,6 +40,7 @@ export default function TwoFactorAuth({ onSuccess }: TwoFactorAuthProps) {
                 <input
                     id="mfa-code"
                     type="text"
+                    inputMode="numeric"
                     value={code}
                     onChange={(e) => setCode(e.target.value)}
                 />

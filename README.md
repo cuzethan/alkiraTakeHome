@@ -23,7 +23,7 @@ React.js, Vitest, React Testing Library
 
 Accounts created via Sign Up default to read-only.
 
-Verification Code: "coolcode123"
+Verification Code: "123456" (exactly 6 digits)
 
 ### How to test the login/MFA flow
 1. Go to your terminal and change your directory to the repo
@@ -43,7 +43,7 @@ For signup, I will add the following constraints:
     Username/Password no whitespace and at least 8 characters long
     Password must have at least 1 uppercase, 1 lowercase, 1 symbol, and 1 number
 
-For 2FA, I just used a mock one-time email code
+For 2FA, the verification code must be exactly 6 digits; the mock code is "123456"
 
 For the protected screen, I just did a very simple "to-do list", honestly a poorly written and not the most functional one but it does demonstrate the roles well.
 

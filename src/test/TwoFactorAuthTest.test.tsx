@@ -22,18 +22,47 @@ describe('Two-Factor Authentication', () => {
     expect(screen.getByRole('button', { name: /verify/i })).toBeInTheDocument()
   })
 
+  describe('Verification code validation', () => {
+    it('shows error when code is empty', async () => {
+      const user = userEvent.setup()
+
+      await user.click(screen.getByRole('button', { name: /verify/i }))
+
+      expect(screen.getByText(/verification code must be exactly 6 characters long/i)).toBeInTheDocument()
+    })
+
+    it('shows error when code is fewer than 6 characters', async () => {
+      const user = userEvent.setup()
+
+      await user.type(screen.getByLabelText(/verification code/i), '12345')
+      await user.click(screen.getByRole('button', { name: /verify/i }))
+
+      expect(screen.getByText(/verification code must be exactly 6 characters long/i)).toBeInTheDocument()
+    })
+
+    it('shows error when code is more than 6 characters', async () => {
+      const user = userEvent.setup()
+
+      await user.type(screen.getByLabelText(/verification code/i), '1234567')
+      await user.click(screen.getByRole('button', { name: /verify/i }))
+
+      expect(screen.getByText(/verification code must be exactly 6 characters long/i)).toBeInTheDocument()
+    })
+
+    it('shows error when code contains non-digit characters', async () => {
+      const user = userEvent.setup()
+
+      await user.type(screen.getByLabelText(/verification code/i), '12ab56')
+      await user.click(screen.getByRole('button', { name: /verify/i }))
+
+      expect(screen.getByText(/verification code must contain only digits/i)).toBeInTheDocument()
+    })
+  })
+
   it('shows invalid verification code message on failed verification', async () => {
     const user = userEvent.setup()
 
-    await user.type(screen.getByLabelText(/verification code/i), 'wrongcode')
-    await user.click(screen.getByRole('button', { name: /verify/i }))
-
-    expect(screen.getByText(/invalid verification code/i)).toBeInTheDocument()
-  })
-
-  it('shows invalid verification code message when code is empty', async () => {
-    const user = userEvent.setup()
-
+    await user.type(screen.getByLabelText(/verification code/i), '000000')
     await user.click(screen.getByRole('button', { name: /verify/i }))
 
     expect(screen.getByText(/invalid verification code/i)).toBeInTheDocument()
@@ -42,7 +71,7 @@ describe('Two-Factor Authentication', () => {
   it('navigates to ProtectedScreen on successful verification', async () => {
     const user = userEvent.setup()
 
-    await user.type(screen.getByLabelText(/verification code/i), 'coolcode123')
+    await user.type(screen.getByLabelText(/verification code/i), '123456')
     await user.click(screen.getByRole('button', { name: /verify/i }))
 
     expect(screen.getByText(/protected/i)).toBeInTheDocument()
